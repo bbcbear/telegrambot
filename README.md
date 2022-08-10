@@ -9,6 +9,6 @@ For build
 
     go build -o /telegram-bot
 
-For run set env var 
+For run - set env var and start telegram-bot binary
 
     export TELEGRAM_APITOKEN=<telegramm_tocken>
