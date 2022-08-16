@@ -16,4 +16,3 @@ For run binary - set env var and start telegram-bot binary
 For run Docker container
 
     docker run -e TELEGRAM_APITOKEN=<telegramm_tocken> -d bbcbear/telegrambot
-asdasd
