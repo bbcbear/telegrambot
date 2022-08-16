@@ -8,6 +8,8 @@ import (
 )
 
 func main() {
+	#simple echo bot
+	
 	bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APITOKEN"))
 	if err != nil {
 		log.Panic(err)
