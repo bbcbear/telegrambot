@@ -25,7 +25,8 @@ func main() {
 	})
 
 	b.Handle("/time", func(c tele.Context) error {
-		return c.Send(time.Now())
+		t := time.Now()
+		return c.Send(t.String())
 	})
 
 	b.Start()

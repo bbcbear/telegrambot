@@ -2,7 +2,11 @@ name: Docker Image CI
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "develop" ]
+    paths-ignore:
+      - '**/README.md'
+  push:
+    branches: [ "develop" ]
     paths-ignore:
       - '**/README.md'
 
@@ -23,12 +27,18 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        name: Docker Tags Action
+        uses: dnaka91/action-docker-tags@v0.1.0
+        with:
+          registries: |
+            docker.io
       -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: bbcbear/telegrambot:latest
+          tags: ${{ steps.docker_tags.outputs.tags }}
       
       
       
