@@ -3,35 +3,30 @@ package main
 import (
 	"log"
 	"os"
+	"time"
 
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tele "gopkg.in/telebot.v3"
 )
 
 func main() {
-	#simple echo bot
-	
-	bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APITOKEN"))
+	pref := tele.Settings{
+		Token:  os.Getenv("TELEGRAM_APITOKEN"),
+		Poller: &tele.LongPoller{Timeout: 10 * time.Second},
+	}
+
+	b, err := tele.NewBot(pref)
 	if err != nil {
-		log.Panic(err)
+		log.Fatal(err)
+		return
 	}
 
-	bot.Debug = true
+	b.Handle("/hello", func(c tele.Context) error {
+		return c.Send("Hello!")
+	})
 
-	log.Printf("Authorized on account %s", bot.Self.UserName)
+	b.Handle("/time", func(c tele.Context) error {
+		return c.Send(time.Now())
+	})
 
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
-
-	updates := bot.GetUpdatesChan(u)
-
-	for update := range updates {
-		if update.Message != nil { // If we got a message
-			log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
-
-			msg := tgbotapi.NewMessage(update.Message.Chat.ID, update.Message.Text)
-			msg.ReplyToMessageID = update.Message.MessageID
-
-			bot.Send(msg)
-		}
-	}
+	b.Start()
 }
