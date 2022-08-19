@@ -27,18 +27,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - 
-        name: Docker Tags Action
-        uses: dnaka91/action-docker-tags@v0.1.0
-        with:
-          registries: |
-            docker.io
       -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: ${{ steps.docker_tags.outputs.tags }}
+          tags: bbcbear/telegrambot:devlatest
       
       
       
